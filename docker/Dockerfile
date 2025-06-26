@@ -1,6 +1,6 @@
 # Get a base image
-RUN apt-get update && apt-get install --yes ccache ...
 FROM docker.io/ros:noetic-ros-base-focal AS base
+RUN apt-get update && apt-get install --yes ccache ...
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install required packages
