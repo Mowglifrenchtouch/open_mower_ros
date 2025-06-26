@@ -12,4 +12,4 @@
 	url = https://github.com/xtech/definitions-open-mower.git
 [submodule "xbot_remote"]
 	path = src/lib/xbot_remote
-	url = https://github.com/Mowglifrenchtouch/xbot_remote
+	url = https://github.com/Mowglifrenchtouch/xbot_remote.git
