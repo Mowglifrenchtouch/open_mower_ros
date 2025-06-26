@@ -1,4 +1,5 @@
 # Get a base image
+RUN apt-get update && apt-get install --yes ccache ...
 FROM docker.io/ros:noetic-ros-base-focal AS base
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -71,8 +72,9 @@ COPY --link --from=slic3r /opt/prebuilt/slic3r_coverage_planner /opt/prebuilt/sl
 COPY --link --from=dependencies /apt-install_list /apt-install_list
 RUN apt-get update && \
     apt-get install --no-install-recommends --yes $(cat /apt-install_list) libasio-dev && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* /apt-install_list
 
+# copy repo
 COPY --link ./ /opt/open_mower_ros
 
 #delete prebuilt libs (so that they won't shadow the preinstalled ones)
@@ -80,7 +82,12 @@ RUN rm -rf /opt/open_mower_ros/src/lib/slic3r_coverage_planner /apt-install_list
 
 WORKDIR /opt/open_mower_ros
 
-RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.bash && cd /opt/open_mower_ros/src && catkin_init_workspace && cd .. && source /opt/prebuilt/slic3r_coverage_planner/setup.bash && catkin_make -DCATKIN_BLACKLIST_PACKAGES=slic3r_coverage_planner"
+RUN bash -c "source /opt/ros/$ROS_DISTRO/setup.bash && \
+             cd /opt/open_mower_ros/src && \
+             catkin_init_workspace && \
+             cd .. && \
+             source /opt/prebuilt/slic3r_coverage_planner/setup.bash && \
+             catkin_make -DCATKIN_BLACKLIST_PACKAGES=slic3r_coverage_planner -j$(nproc)"
 
 RUN echo "export OM_SOFTWARE_VERSION=$(git describe --tags || git describe --always || echo "v0.0.0")" > version_info.env
 
