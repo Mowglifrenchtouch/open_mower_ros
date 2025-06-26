@@ -1,0 +1,6 @@
+<launch>
+  <node name="xbot_remote" pkg="xbot_remote" type="xbot_remote" output="screen">
+    <param name="VxMax" value="0.4" />
+    <param name="VzMax" value="3.2" />
+  </node>
+</launch>

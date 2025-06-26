@@ -29,6 +29,7 @@ class EmergencyServiceInterface : public EmergencyServiceInterfaceBase {
   void OnServiceConnected(uint16_t service_id) override;
   void OnTransactionEnd() override;
   void OnServiceDisconnected(uint16_t service_id) override;
+  virtual void OnSetEmergencyChanged(const uint8_t &new_value) = 0;
 
   void PublishEmergencyState();
 

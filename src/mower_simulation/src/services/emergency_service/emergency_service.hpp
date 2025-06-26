@@ -7,16 +7,15 @@
 
 #include <ros/time.h>
 
-#include <EmergencyServiceBase.hpp>
-
+#include "services/emergency_service/EmergencyServiceInterface.h"
 #include "../../SimRobot.h"
 
 using namespace xbot::service;
 
-class EmergencyService : public EmergencyServiceBase {
- private:
+class EmergencyService : public EmergencyServiceInterface {  // Corrigé ici
  public:
-  explicit EmergencyService(uint16_t service_id, SimRobot &robot) : EmergencyServiceBase(service_id), robot_(robot) {
+  explicit EmergencyService(uint16_t service_id, const xbot::serviceif::Context& ctx, const ros::Publisher& publisher, SimRobot& robot)
+      : EmergencyServiceInterface(service_id, ctx, publisher), robot_(robot) {
   }
 
  protected:

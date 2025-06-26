@@ -5,6 +5,7 @@
     <include file="$(find open_mower)/launch/include/_localization.launch"/>
     <include file="$(find open_mower)/launch/include/_teleop.launch"/>
     <include file="$(find open_mower)/launch/include/_record.launch">
+    <include file="$(find xbot_remote)/launch/xbot_remote.launch" />
         <arg name="prefix" value="mow_area"/>
     </include>
 
