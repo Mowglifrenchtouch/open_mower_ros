@@ -35,7 +35,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-24.04-arm, ubuntu-24.04 ]
+        include:
+          - os: ubuntu-24.04-arm
+            docker_build_arch: arm64
+            BUILD_ARCH: arm64
+            REPOSITORY_LC: mowglifrenchtouch/mowgli-docker
+          - os: ubuntu-24.04
+            docker_build_arch: amd64
+            BUILD_ARCH: amd64
+            REPOSITORY_LC: mowglifrenchtouch/mowgli-docker
         include:
           - os: ubuntu-24.04-arm
             docker_build_arch: arm64
@@ -47,10 +55,6 @@ jobs:
           REPOSITORY: '${{ github.repository }}'
         run: |
           build_arch=${{ matrix.docker_build_arch }}
-          echo "BUILD_ARCH=${build_arch//\//-}" >> ${GITHUB_ENV}
-
-          echo "REPOSITORY_LC=${REPOSITORY,,}" >> ${GITHUB_ENV}
-
       # Get the repository's code
       - name: Checkout
         uses: actions/checkout@v4
@@ -125,8 +129,6 @@ jobs:
         env:
           REPOSITORY: '${{ github.repository }}'
         run: |
-          echo "REPOSITORY_LC=${REPOSITORY,,}" >> ${GITHUB_ENV}
-
       - name: Download digests
         uses: actions/download-artifact@v4
         with:
